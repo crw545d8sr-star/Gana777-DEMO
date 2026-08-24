@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Casino 777 - Demo</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#080b12;color:#fff}
+header{background:linear-gradient(135deg,#151a29,#090b12);padding:18px 22px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #272d40}
+.logo{font-size:27px;font-weight:900}.logo span{color:#ffd43b}
+.balance{background:#171d2b;padding:10px 15px;border-radius:12px;color:#ffd43b;font-weight:bold}
+.hero{text-align:center;padding:35px 18px;background:radial-gradient(circle at center,#242b45,#080b12 65%)}
+.hero h1{font-size:38px;margin:5px 0 10px}.hero p{color:#b7bdcc}
+.container{max-width:1050px;margin:auto;padding:20px}
+.games{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px}
+.card{background:#121725;border:1px solid #252d42;border-radius:18px;padding:20px;text-align:center;box-shadow:0 10px 25px #0005}
+.icon{font-size:58px;margin:10px}.card h3{margin:8px}.card p{color:#9ea6b8;font-size:14px}
+button{border:0;border-radius:10px;padding:11px 17px;font-weight:bold;cursor:pointer;background:#ffd43b;color:#111}
+button:hover{filter:brightness(1.08)}
+.panel{margin-top:25px;background:#101522;border-radius:18px;padding:20px;border:1px solid #252d42}
+.row{display:flex;gap:10px;flex-wrap:wrap}.input{padding:11px;border-radius:9px;border:1px solid #30384d;background:#0b0f18;color:#fff}
+.notice{margin-top:20px;padding:14px;border-radius:10px;background:#171d2b;color:#bfc6d6;font-size:13px}
+footer{text-align:center;color:#737b8d;padding:30px}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">CASINO <span>777</span></div>
+  <div class="balance">Saldo demo: $<span id="balance">100000</span></div>
+</header>
+
+<section class="hero">
+  <h1>Bienvenido a Casino 777</h1>
+  <p>Plataforma DEMO con saldo virtual. No acepta dinero real.</p>
+</section>
+
+<main class="container">
+  <div class="games">
+    <div class="card">
+      <div class="icon">🎰</div><h3>Tragamonedas</h3>
+      <p>Gira los carretes con saldo virtual.</p>
+      <button onclick="playSlot()">JUGAR</button>
+    </div>
+    <div class="card">
+      <div class="icon">🎡</div><h3>Ruleta</h3>
+      <p>Elige rojo, negro o verde.</p>
+      <button onclick="playRoulette()">JUGAR</button>
+    </div>
+    <div class="card">
+      <div class="icon">🃏</div><h3>Blackjack</h3>
+      <p>Demo de blackjack con saldo virtual.</p>
+      <button onclick="playBlackjack()">JUGAR</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Cuenta demo</h2>
+    <div class="row">
+      <input id="name" class="input" placeholder="Nombre de jugador">
+      <button onclick="saveName()">Guardar</button>
+      <button onclick="resetDemo()">Reiniciar saldo</button>
+    </div>
+    <p id="msg">Jugador: invitado</p>
+    <div class="notice">
+      Esta versión es únicamente una demostración educativa: utiliza saldo ficticio y no procesa depósitos, retiros ni apuestas con dinero real.
+    </div>
+  </div>
+</main>
+
+<footer>Casino 777 — DEMO</footer>
+
+<script>
+let balance=100000;
+const $=id=>document.getElementById(id);
+function update(){ $("balance").textContent=balance.toLocaleString("es-CO"); }
+function saveName(){let n=$("name").value.trim(); $("msg").textContent="Jugador: "+(n||"invitado");}
+function resetDemo(){balance=100000;update();$("msg").textContent="Saldo reiniciado."}
+function bet(cost=5000){if(balance<cost){alert("Saldo demo insuficiente.");return false}balance-=cost;update();return true}
+function playSlot(){
+ if(!bet())return;
+ let a=["🍒","🍋","7️⃣","💎","🔔"], r=[a[Math.floor(Math.random()*a.length)],a[Math.floor(Math.random()*a.length)],a[Math.floor(Math.random()*a.length)]];
+ let prize=(r[0]===r[1]&&r[1]===r[2])?25000:(r[0]===r[1]?7500:0);
+ balance+=prize;update();alert(r.join(" | ")+(prize?"\n¡Ganaste $"+prize.toLocaleString("es-CO")+" demo!":"\nNo hubo premio."));
+}
+function playRoulette(){
+ if(!bet())return;
+ let n=Math.floor(Math.random()*37), prize=n===0?0:Math.random()<.5?10000:0;
+ balance+=prize;update();alert("La ruleta cayó en "+n+(prize?"\n¡Ganaste $10.000 demo!":"\nNo hubo premio."));
+}
+function playBlackjack(){
+ if(!bet())return;
+ let player=Math.floor(Math.random()*10)+12, dealer=Math.floor(Math.random()*10)+12;
+ let prize=player>dealer?10000:(player===dealer?5000:0);
+ balance+=prize;update();alert("Tú: "+player+" | Casa: "+dealer+(prize?"\nResultado favorable. Premio demo: $"+prize.toLocaleString("es-CO"):"\nPerdiste esta ronda demo."));
+}
+update();
+</script>
+</body>
+</html>
